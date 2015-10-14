@@ -1,0 +1,102 @@
+{% load url from future %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Plan your trip easily</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+        <style type="text/css">
+    		#left-panel {
+                
+                width: 14%;
+                height: 98%;
+                left:0%;
+                top: 1%;
+                bottom: 1%;
+                position: absolute;
+                overflow: hidden;
+                border: 1px solid #ccc;
+
+            }
+
+            #basis-top-left-panel {
+
+                width: 100%;
+                height: 50%;
+                left: 0%;
+                top: 0%;
+                position: absolute;
+                border: 1px solid #ccc;
+
+            }
+            #basis-bottom-left-panel {
+
+                width: 100%;
+                height: 50%;
+                left: 0%;
+                top: 50%;
+                position: relative;
+                border: 1px solid #ccc;
+                overflow: auto;
+
+            }
+            
+            #content {
+
+                width:98%;
+                height:98%;
+                position:absolute;
+            }
+
+            #google-maps {
+                
+                width:85%;
+                height:98%;
+                left: 14%;
+                top: 1%;
+                border: 1px solid #ccc;
+                position:absolute;
+
+            }
+            
+    		#info-onMap {
+
+                width:25%;
+                height:100%;
+                left: 50%;
+                top: 50%;
+                bottom: 50%;
+                border: 1px solid #ccc;
+                background-color: red;
+                position:relative;
+                z-index: 5;
+
+            }
+
+        </style>
+	<script src="http://maps.googleapis.com/maps/api/js?language=ru&libraries=geometry"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="{% static 'js/google_maps/map.js'%}"></script>
+
+  </head>
+	  <body>
+        <div id="content">
+            {% block content %}  
+            {% endblock %}
+        </div>
+        <div id="left-panel">
+            
+            <div id="basis-top-left-panel">
+                {% block top-left-pannel %}
+                {% endblock %}
+            </div>
+            <div id="basis-bottom-left-panel">
+                {%block bottom-left-pannel %}
+
+                {% endblock %}
+            </div>
+        </div>
+	  </body>
+	</html>

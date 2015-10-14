@@ -1,0 +1,126 @@
+{% load url from future %}
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Plan your trip easily</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+        <style type="text/css">
+    		
+
+            #google-maps {
+                
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1;
+                
+            }
+
+            #panel {
+
+                position: absolute;
+                left: 0;
+                width: 250px;
+                height: 100%;
+                opacity: 1;
+                z-index: 3;
+                background-color: white;
+            }
+
+            #info-onMap {
+
+                position: absolute;
+                top:0%;
+                left: 0%;
+                width: 100%;
+                height: 100%;
+                opacity: 0.2;
+                z-index: 2;
+                background-color: white;
+            }
+
+            #geocode_div {
+
+                position: absolute;
+                top: 7%;
+                left: 30%;
+                width: 300px;
+                height: 27px;
+                z-index: 2;
+                background-color: white;
+            }
+
+            #geocode_input {
+
+                position: absolute;
+                top: 5%;
+                width:250px;
+                height: 18px;
+                z-index: 2;
+            }
+            
+            #search_btn {
+
+                position: absolute;
+                right: 0%;
+                z-index: 2;
+
+            }
+
+            #close_btn {
+
+                position: absolute;
+                right: 0%;
+                z-index: 2;
+
+            }
+            
+            #cur_path_div {
+
+                position: absolute;
+                top: 0%;
+                right: 0%;
+                width:250px;
+                background-color: white;
+                z-index: 2;
+            }
+
+            #cpp {
+
+                border: solid 1px black;
+                border-top-style: none;
+            }
+
+        </style>
+	
+
+
+    <script src="http://maps.googleapis.com/maps/api/js?language=ru&libraries=geometry"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="{% static 'js/google_maps/map.js'%}"></script>
+    
+    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.2/material.indigo-pink.min.css">
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.2/material.min.js"></script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+  </head>
+	  <body>
+
+            <div id="content">
+                
+                {% block content %}
+                {% endblock %}
+
+                {% block panel %}
+                {% endblock %}
+
+            </div>
+
+	  </body>
+	</html>

@@ -1,0 +1,8 @@
+
+<form action={% url 'login' %} method="post"> 
+    {% csrf_token %}
+    <div><label for="id_username">Username:</label><input id="id_username" maxlength="254" name="username" type="text" /></div>
+    <div><label for="id_password">Password:</label><input id="id_password" name="password" type="password" /></div>
+    <div><input type="submit" name="submit" value="Войти" /></div>
+    
+</form>

@@ -1,0 +1,80 @@
+
+<style type="text/css">
+.getLink {
+    cursor: pointer;
+}
+
+.getLink:hover {
+    background: #F0F8FF;
+}
+
+.active {
+    background: #ADD8E6;
+}
+
+</style>
+<script>
+    $(document).ready(function(){
+        
+        $(document).on('click', '.getLink', (function(){
+
+            $(".getLink").removeClass("active");
+            
+            $(this).addClass(function(index, currentClass) {
+                
+                var URL = $(this).attr("data-retrievePathUrl");
+                $.get(URL)
+                    .done(function(data) {
+                        drawSavedPath(data);
+                    });
+
+                id = $(this).attr("data-id");
+                var reportUrl;
+                if ( $('#routePanel')[0] === undefined ) {
+                    
+                    reportUrl = $(this).attr("data-addReportUrl");
+
+                    if ( reportUrl === undefined ) {
+                        reportUrl = $(this).attr("data-getReportUrl");
+                        $(this).append('<div id="routePanel"><a href="' + reportUrl + '">Отчет</a></div>');
+                        reportUrl = undefined;
+                    } else {
+                        $(this).append('<div id="routePanel"><a href="' + reportUrl + '">Написать отчет</a></div>');
+                        reportUrl = undefined
+                    };
+                } else {
+                    reportUrl = $(this).attr("data-addReportUrl");
+                    $('.getLink #routePanel:only-child').remove();
+                    
+                    if ( reportUrl === undefined ) {
+                        reportUrl = $(this).attr("data-getReportUrl");
+                        $(this).append('<div id="routePanel"><a href="' + reportUrl + '">Отчет</a></div>');
+                        reportUrl = undefined;
+                    } else {
+                        $(this).append('<div id="routePanel"><a href="' + reportUrl + '">Написать отчет</a></div>');
+                        reportUrl = undefined
+                    // $(this).append('<div id="routePanel"><a href="' + reportUrl + '">Написать отчет</a></div>');
+                    }; 
+                return currentClass + " " + "active";
+                };
+            });
+        }));
+    });
+</script>
+
+
+{% if me.is_authenticated %}
+    {% if paths %}
+        {% for path in paths %}
+            {% if path.is_reported %}
+               <div class="getLink" data-retrievePathUrl = "{% url 'retrieve_path' path.user path.id %}" data-getReportUrl="{% url 'get_report' path.id %}" data-id="{{ path.id }}">{{ path.name }}</div> 
+            {% else %}
+                <div class="getLink" data-retrievePathUrl = "{% url 'retrieve_path' path.user path.id %}" data-addReportUrl="{% url 'add_report' path.id %}" data-id="{{ path.id }}">{{ path.name }}</div>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        Нет сохраненых маршрутов
+    {% endif %}
+{% else %}
+    Нужно зайти под своей учетной записью
+{% endif %}

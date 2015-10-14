@@ -1,0 +1,117 @@
+{% extends 'basis.html' %}
+{% load staticfiles %}
+
+<style type="text/css">
+.visible {  
+}
+
+.hiden {
+}
+</style>
+
+
+{% block panel %}
+    
+    <div id="panel">
+        <script>
+            
+        $(document).on("click", ".hiden", function() {
+            var panelWidth = $("#panel").css("width");
+            $("#menu").removeClass("hiden");
+            $("#menu").addClass("visible");
+            $("#panel").animate({
+                left: "-=" + panelWidth,
+                opacity: "-=0.5",
+                }, 300, function() {
+                
+            });
+        });
+
+        $(document).on("click", ".visible", function() {
+            var panelWidth = $("#panel").css("width");
+            $("#menu").removeClass("visible");
+            $("#menu").addClass("hiden");
+            $("#panel").animate({
+                 left: "+=" + panelWidth,
+                opacity: "+=0.5",
+                }, 300, function() {
+                
+            });
+        });
+    </script>
+
+        {% block login %}
+        
+            {% if me.is_authenticated %}
+                Добро пожаловать, {{ me }}. <a href={% url 'logout' %}>Выйти</a>
+            {% else %}
+                <a href={% url 'join' %}>Зарегестрируйтесь</a> или <a href={% url 'login' %}>войдите</a>
+            {% endif %}
+        {% endblock %}
+    
+        {% block control %}
+            {% if me.is_authenticated %}
+                <form id="addPathsForm" action="{% url 'add_path' %}" method="post"> 
+                    {% csrf_token %}
+                    <input type="text", id="id_name", maxlength="200" name="name" />
+                    <input type="hidden", id="id_route_data" name="route_data" />
+                    <input type="submit" name="submit" value="Сохранить маршрут" />
+                </form>
+            <script>
+            $("#addPathsForm").submit(function( event ) {
+                event.preventDefault();
+                var data = $(this).serialize();
+                var URL = $('#addPathsForm').attr("action");
+                $.post(URL, data, function(data) {
+                    $("#my_paths").load("{% url 'my_paths' %}");
+                })
+                    .fail(function() {
+                        alert("Error");
+                    })
+            });
+            </script>
+            {% endif %}
+        {% endblock %}
+
+        
+        <div id='links'>
+
+            <div id='my_paths'>Сохраненые маршруты
+                <div id="container"></div>
+            </div>
+                
+            <div id='cur_path'>Текущий маршрут</div>
+            <script>
+                //$(document).ready(function(){
+                $('#my_paths').click(function(){   
+                    $("#container").slideToggle('fast');
+                });
+
+                $(document).ready(function(){
+                    $("#container").load("{% url 'my_paths' %}");
+                });
+            </script>
+        </div>
+    </div>
+
+
+{% endblock %}
+
+{% block content %}
+    
+    <div id="google-maps"></div>
+    <div id="geocode_div">
+        <script>
+            $(document).on('click', '#search_btn', function(){
+                var address = $('#geocode_input').val();
+                geocode(address)
+            });
+        </script>
+        <img id="menu" class="hiden" src="{% static 'img/ic_menu_black_24px.svg' %}"/>
+        <input id="geocode_input" type="text", name="input"/>
+        <img id="search_btn" src="{% static 'img/ic_search_black_24px.svg' %}"/>
+        
+    </div>
+    <div id='cur_path_div'></div>
+
+{% endblock %}
